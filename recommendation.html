@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Automobile Recommendations</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        header {
+            background-color: #007bff;
+            color: white;
+            padding: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        main {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        label {
+            display: flex;
+            flex-direction: column;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        input, select {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            padding: 12px;
+            font-size: 18px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #recommendations {
+            display: none;
+            margin-top: 20px;
+            text-align: left;
+            padding: 15px;
+            background-color: #f9f9f9;
+            border-left: 5px solid #007bff;
+            border-radius: 5px;
+        }
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+        ul li {
+            padding: 10px;
+            font-size: 16px;
+            background: #e9ecef;
+            margin: 5px 0;
+            border-radius: 5px;
+        }
+        footer {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
+    <script>
+        function showRecommendations() {
+            let carMake = document.getElementById('carMake').value;
+            let priceRange = document.getElementById('priceRange').value;
+
+            let recommendations = {
+                "Toyota": {
+                    "Under $20,000": ["Toyota Yaris - $18,000"],
+                    "$20,000 - $30,000": ["Toyota Corolla - $25,000"],
+                    "$30,000 - $40,000": ["Toyota Camry - $35,000"],
+                    "$40,000 - $50,000": ["Toyota Highlander - $45,000"],
+                    "Over $50,000": ["Toyota Land Cruiser - $60,000"]
+                },
+                "Honda": {
+                    "Under $20,000": ["Honda Fit - $19,000"],
+                    "$20,000 - $30,000": ["Honda Civic - $27,000"],
+                    "$30,000 - $40,000": ["Honda Accord - $33,000"],
+                    "$40,000 - $50,000": ["Honda Pilot - $47,000"],
+                    "Over $50,000": ["Honda NSX - $155,000"]
+                },
+                "Ford": {
+                    "Under $20,000": ["Ford Fiesta - $18,500"],
+                    "$20,000 - $30,000": ["Ford Focus - $24,000"],
+                    "$30,000 - $40,000": ["Ford Escape - $33,500"],
+                    "$40,000 - $50,000": ["Ford Explorer - $48,000"],
+                    "Over $50,000": ["Ford Mustang - $55,000"]
+                },
+                "Chevrolet": {
+                    "Under $20,000": ["Chevrolet Spark - $17,000"],
+                    "$20,000 - $30,000": ["Chevrolet Malibu - $27,500"],
+                    "$30,000 - $40,000": ["Chevrolet Equinox - $34,000"],
+                    "$40,000 - $50,000": ["Chevrolet Traverse - $48,500"],
+                    "Over $50,000": ["Chevrolet Corvette - $65,000"]
+                },
+                "Nissan": {
+                    "Under $20,000": ["Nissan Versa - $16,500"],
+                    "$20,000 - $30,000": ["Nissan Sentra - $24,500"],
+                    "$30,000 - $40,000": ["Nissan Altima - $35,000"],
+                    "$40,000 - $50,000": ["Nissan Murano - $48,000"],
+                    "Over $50,000": ["Nissan GT-R - $110,000"]
+                },
+                "BMW": {
+                    "Under $20,000": ["No cars available in this range"],
+                    "$20,000 - $30,000": ["No cars available in this range"],
+                    "$30,000 - $40,000": ["BMW 2 Series - $38,000"],
+                    "$40,000 - $50,000": ["BMW 3 Series - $48,500"],
+                    "Over $50,000": ["BMW X5 - $65,000"]
+                },
+                "Audi": {
+                    "Under $20,000": ["No cars available in this range"],
+                    "$20,000 - $30,000": ["No cars available in this range"],
+                    "$30,000 - $40,000": ["Audi A3 - $39,500"],
+                    "$40,000 - $50,000": ["Audi Q5 - $49,500"],
+                    "Over $50,000": ["Audi A8 - $85,000"]
+                },
+                "Mercedes": {
+                    "Under $20,000": ["No cars available in this range"],
+                    "$20,000 - $30,000": ["No cars available in this range"],
+                    "$30,000 - $40,000": ["Mercedes-Benz A-Class - $38,500"],
+                    "$40,000 - $50,000": ["Mercedes-Benz C-Class - $49,000"],
+                    "Over $50,000": ["Mercedes-Benz S-Class - $100,000"]
+                }
+            };
+
+            let recommendationList = document.getElementById('recommendationList');
+            recommendationList.innerHTML = "";
+
+            if (carMake in recommendations && priceRange in recommendations[carMake]) {
+                recommendations[carMake][priceRange].forEach(car => {
+                    let li = document.createElement('li');
+                    li.textContent = car;
+                    recommendationList.appendChild(li);
+                });
+                document.getElementById('recommendations').style.display = 'block';
+            } else {
+                document.getElementById('recommendations').style.display = 'none';
+            }
+        }
+    </script>
+</head>
+<body>
+    <header>
+        Find Your Automobiles
+    </header>
+    
+    <main>
+        <h2>Enter Details</h2>
+        <form onsubmit="showRecommendations(); return false;">
+            <label>Full Name: <input type="text" required></label>
+            <label>Gender: 
+                <select required>
+                    <option value="">Select</option>
+                    <option>Male</option>
+                    <option>Female</option>
+                    <option>Other</option>
+                </select>
+            </label>
+            <label>Date of Birth: <input type="date" required></label>
+            <label>Job Industry: 
+                <select required>
+                    <option value="">Select</option>
+                    <option>Technology</option>
+                    <option>Healthcare</option>
+                    <option>Finance</option>
+                    <option>Education</option>
+                    <option>Other</option>
+                </select>
+            </label>
+            <label>Tenure (years): <input type="number" min="1" required></label>
+    
+            <label>Car Make: 
+                <select id="carMake" required>
+                    <option value="">Select</option>
+                    <option>Toyota</option>
+                    <option>Honda</option>
+                    <option>Ford</option>
+                    <option>Chevrolet</option>
+                    <option>Nissan</option>
+                    <option>BMW</option>
+                    <option>Audi</option>
+                    <option>Mercedes</option>
+                </select>
+            </label>
+            <label>Price Range: 
+                <select id="priceRange" required>
+                    <option value="">Select</option>
+                    <option>Under $20,000</option>
+                    <option>$20,000 - $30,000</option>
+                    <option>$30,000 - $40,000</option>
+                    <option>$40,000 - $50,000</option>
+                    <option>Over $50,000</option>
+                </select>
+            </label>
+            <button type="submit">Get Recommendations</button>
+        </form>
+    <main>
+        <section id="recommendations">
+            <h2>Recommended Cars for You</h2>
+            <ul id="recommendationList"></ul>
+        </section>
+    </main>
+</body>
+</html>
